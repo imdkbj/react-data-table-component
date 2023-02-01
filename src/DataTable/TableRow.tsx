@@ -24,12 +24,13 @@ const pointerCSS = css`
 
 const TableRowStyle = styled.div.attrs(props => ({
 	style: props.style,
-}))<{
+})) <{
 	dense?: boolean;
 	highlightOnHover?: boolean;
 	pointerOnHover?: boolean;
 	selected?: boolean;
 	striped?: boolean;
+	expanded?: boolean;
 }>`
 	display: flex;
 	align-items: stretch;
@@ -42,6 +43,7 @@ const TableRowStyle = styled.div.attrs(props => ({
 	${({ highlightOnHover }) => highlightOnHover && highlightCSS};
 	${({ pointerOnHover }) => pointerOnHover && pointerCSS};
 	${({ selected, theme }) => selected && theme.rows.selectedHighlightStyle};
+	${({ expanded, theme }) => expanded && `border-bottom: 0;`};
 `;
 
 type DProps<T> = Pick<
@@ -78,6 +80,7 @@ interface TableRowProps<T> extends Required<DProps<T>> {
 	draggingColumnId: number | string;
 	defaultExpanded?: boolean;
 	defaultExpanderDisabled: boolean;
+	expanded: boolean;
 	id: string | number;
 	onSelectedRow: (action: SingleRowAction<T>) => void;
 	pointerOnHover: boolean;
@@ -209,6 +212,7 @@ function Row<T>({
 				className={classNames}
 				selected={highlightSelected}
 				style={style}
+				expanded={expanded}
 			>
 				{selectableRows && (
 					<TableCellCheckbox
